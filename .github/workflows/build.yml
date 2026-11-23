@@ -1,0 +1,16 @@
+name: build-dylib
+on: [workflow_dispatch, push]
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile
+        run: |
+          DIR="$(dirname "$(find . -name UniversalTranslate.mm | head -1)")"
+          cd "$DIR"
+          sh build_mac.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: UniversalTranslate-dylib
+          path: "**/UniversalTranslate.dylib"
